@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
  * 第二行返回类型ExampleUser用来接收数据库返回的内容，数据库字段名与实体类字段名应该意志，会自动注入
  * @Param用来传递基本类型参数和String
  * 也可不使用@Param，直接传递对象，但对象应该包括sql语句中的参数的字段，并且名称一致
+ * 使用时，在service层自动注入mapper，调用mapper方法
  */
 public interface ExampleMapper {
 

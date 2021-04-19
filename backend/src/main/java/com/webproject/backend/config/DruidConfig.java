@@ -13,6 +13,10 @@ import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.sql.DataSource;
 
+/**
+ * @description
+ * Druid数据源配置
+ */
 @Configuration
 public class DruidConfig {
 
@@ -22,6 +26,13 @@ public class DruidConfig {
         return new DruidDataSource();
     }
 
+    /**
+     * @description
+     * 后台监控
+     * 登录url:localhost:8080/druid/index.html
+     * 设置了用户名和密码
+     * @return
+     */
     @Bean
     public ServletRegistrationBean<Servlet> statViewServlet(){
         ServletRegistrationBean<Servlet> registrationBean = new ServletRegistrationBean<>(new StatViewServlet(),"/druid/*");
