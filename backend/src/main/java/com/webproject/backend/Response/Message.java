@@ -7,9 +7,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
+/**
+ * @description
+ * 简单的消息生成类
+ */
+
 public class Message {
 
-    private static Logger logger = LoggerFactory.getLogger(Message.class);
+    private static final Logger logger = LoggerFactory.getLogger(Message.class);
 
     public static HashMap<String,Object> newMessage(String message){
         HashMap<String,Object> map = new HashMap<>();

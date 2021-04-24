@@ -16,7 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+
+/**
+ * @description
+ * socket.io事件处理
+ * @onConnect 处理连接
+ * @diconnect 关闭连接
+ * sendEvent 向前端发送事件
+ * @OnEvent 处理事件
+ */
 
 @Component
 public class SocketIOConnectHandler {
@@ -34,7 +42,6 @@ public class SocketIOConnectHandler {
 
     @OnConnect
     public void onConnect(SocketIOClient client){
-        System.out.println("ok");
         client.sendEvent("connected", Message.newMessage("success"));
         SocketIOSession.CLIENT_MAP.putIfAbsent(client.getSessionId().toString(),client);
     }
