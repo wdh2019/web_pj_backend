@@ -23,7 +23,7 @@ server:
   port: 8080
 
 socketio:
-  host: 54.205.181.44
+  host: localhost
   port: 8081
   bossCount: 1
   workerCount: 100

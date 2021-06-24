@@ -21,8 +21,9 @@ public class HistoryService {
     public void pushChatHistory(MessageInfo messageInfo) {
         Date date = new Date(System.currentTimeMillis());
         MessageHistory messageHistory = new MessageHistory();
-        messageHistory.setDate(date);
+        messageHistory.setTime(date);
         messageHistory.setUserId(messageInfo.getUserId());
+        messageHistory.setUsername(messageInfo.getUsername());
         messageHistory.setMessageType(messageInfo.getMessageType());
         messageHistory.setMessage(messageInfo.getMessage());
         historyMapper.addHistory(messageHistory);

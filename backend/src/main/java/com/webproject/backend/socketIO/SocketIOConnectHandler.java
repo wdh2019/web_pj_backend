@@ -52,9 +52,11 @@ public class SocketIOConnectHandler {
         System.out.println("client disconnected : " + client.getSessionId());
         String id = client.getSessionId().toString();
         SocketIOSession.CLIENT_MAP.remove(id);
-        int userId = SocketIOSession.USER_MAP.get(id);
-        SocketIOSession.USER_POSITION.remove(userId);
-        SocketIOSession.USER_MAP.remove(id);
+        if(SocketIOSession.USER_MAP.containsKey(id)) {
+            int userId = SocketIOSession.USER_MAP.get(id);
+            SocketIOSession.USER_POSITION.remove(userId);
+            SocketIOSession.USER_MAP.remove(id);
+        }
         client.sendEvent("disconnected",Message.newMessage("success"));
     }
 

@@ -11,10 +11,10 @@ import java.util.Date;
 public class MessageHistory {
 
     int historyId;
-    @NonNull private Date date;
+    @NonNull private Date time;
     @NonNull private int userId;
     @NonNull private String username;
     @NonNull private String messageType;
-    @NonNull private String Message;
+    @NonNull private String message;
 
 }

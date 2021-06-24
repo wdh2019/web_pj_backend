@@ -30,7 +30,9 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody HashMap<String, Object> params){
         String username = (String)params.get("username");
         String password = (String)params.get("password");
-        if(service.register(username,password))
+        String gender = (String)params.get("gender");
+        int age = (Integer) params.get("age");
+        if(service.register(username,password,age,gender))
             return ResponseEntity.ok(Message.newMessage("success"));
         else
             return ResponseEntity.ok(Message.newMessage("failure"));

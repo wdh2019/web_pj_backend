@@ -21,8 +21,8 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean register(String username,String password){
-        userMapper.insertUser(username,passwordEncoder.encode(password));
+    public boolean register(String username,String password,int age,String gender){
+        userMapper.insertUser(username,passwordEncoder.encode(password),age,gender);
         return true;
     }
 
