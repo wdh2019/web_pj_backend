@@ -2,6 +2,7 @@ package com.webproject.backend.controller;
 
 import com.webproject.backend.Response.Message;
 import com.webproject.backend.entity.User;
+import com.webproject.backend.security.JwtTokenUtil;
 import com.webproject.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,12 @@ public class AuthController {
 
     private final AuthService service;
 
+    private JwtTokenUtil tokenUtil;
+
     @Autowired
-    public AuthController(AuthService service){
+    public AuthController(AuthService service, JwtTokenUtil tokenUtil){
         this.service = service;
+        this.tokenUtil = tokenUtil;
     }
 
     @PostMapping("/register")
@@ -38,8 +42,10 @@ public class AuthController {
         String password = (String)params.get("password");
         User user = service.login(username,password);
         if(user != null){
+            String token = tokenUtil.generateToken(user);
             HashMap<String,Object> map = new HashMap<>();
             map.put("message","success");
+            map.put("token", token);
             map.put("user",user);
             return ResponseEntity.ok(map);
         }else{

@@ -41,17 +41,21 @@ public class SocketIOConnectHandler {
     }
 
     @OnConnect
-    public void onConnect(SocketIOClient client){
+    public void onConnect(SocketIOClient client) {
         System.out.println("client connected : " + client.getSessionId());
         client.sendEvent("connected", Message.newMessage("success"));
         SocketIOSession.CLIENT_MAP.putIfAbsent(client.getSessionId().toString(),client);
     }
 
     @OnDisconnect
-    public void onDisconnect(SocketIOClient client){
+    public void onDisconnect(SocketIOClient client) {
         System.out.println("client disconnected : " + client.getSessionId());
         String id = client.getSessionId().toString();
         SocketIOSession.CLIENT_MAP.remove(id);
+        int userId = SocketIOSession.USER_MAP.get(id);
+        SocketIOSession.USER_POSITION.remove(userId);
+        SocketIOSession.USER_MAP.remove(id);
         client.sendEvent("disconnected",Message.newMessage("success"));
     }
+
 }

@@ -23,11 +23,16 @@ server:
   port: 8080
 
 socketio:
-  host: localhost
+  host: 54.205.181.44
   port: 8081
   bossCount: 1
   workerCount: 100
   allowCustomRequest: true
   pingInterval: 250000
   pingTimeout: 600000
+
+jwt:
+  token:
+    validity: 18000000
+    secret: webpj2021
 

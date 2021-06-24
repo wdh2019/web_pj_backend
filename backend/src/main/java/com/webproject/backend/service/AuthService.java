@@ -27,7 +27,7 @@ public class AuthService {
     }
 
     public User login(String username,String password){
-        List<User> users = userMapper.getUser(username);
+        List<User> users = userMapper.getUsers(username);
         for(User user : users){
             if(passwordEncoder.matches(password,user.getPassword()))
                 return user;

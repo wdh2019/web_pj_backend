@@ -14,7 +14,10 @@ import java.util.List;
 public interface UserMapper {
 
     @Select("select * from user where username = #{username}")
-    List<User> getUser(@Param("username")String username);
+    List<User> getUsers(@Param("username")String username);
+
+    @Select("select * from user where userId = #{userId}")
+    User getUser(@Param("userId")int userId);
 
     @Insert("insert into user (username,password) values(#{username},#{password})")
     void insertUser(@Param("username")String username,@Param("password")String password);
