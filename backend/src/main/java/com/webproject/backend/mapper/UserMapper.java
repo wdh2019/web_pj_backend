@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 @Repository
@@ -18,6 +19,9 @@ public interface UserMapper {
 
     @Select("select * from user where userId = #{userId}")
     User getUser(@Param("userId")int userId);
+
+    @Select("select * from user")
+    Set<User> getAllUsers();
 
     @Insert("insert into user (username,password,age,gender) values(#{username},#{password},#{age}," +
             "#{gender})")
