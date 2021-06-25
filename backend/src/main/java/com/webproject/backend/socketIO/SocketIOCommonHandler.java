@@ -70,6 +70,7 @@ public class SocketIOCommonHandler {
             ChessMessage chessMessage = new ChessMessage();
             chessMessage.setId(id);
             chessMessage.setPosition(position);
+            chessMessage.setLocation(SocketIOSession.CHESS_LOCATION.get(id));
             client.sendEvent("chessPosition", JSON.toJSONString(chessMessage));
         });
     }
@@ -111,6 +112,7 @@ public class SocketIOCommonHandler {
     @OnEvent(value = "updateDisk")
     public void updateDisk(SocketIOClient client, AckRequest ackRequest, ChessMessage chessMessage){
         SocketIOSession.CHESS_POSITION.put(chessMessage.getId(),chessMessage.getPosition());
+        SocketIOSession.CHESS_LOCATION.put(chessMessage.getId(),chessMessage.getLocation());
         broadcastDiskPosition(client.getSessionId().toString(), chessMessage);
     }
 

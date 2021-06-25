@@ -21,10 +21,15 @@ public class SocketIOSession {
 
     public static ConcurrentMap<Integer, String> CHESS_POSITION = new ConcurrentHashMap<>();
 
+    public static ConcurrentMap<Integer, Integer>CHESS_LOCATION = new ConcurrentHashMap<>();
+
     static {
         CHESS_POSITION.put(0,"200,55,100");
         CHESS_POSITION.put(1,"200,45,100");
         CHESS_POSITION.put(2,"200,35,100");
+        CHESS_LOCATION.put(0,0);
+        CHESS_LOCATION.put(1,0);
+        CHESS_LOCATION.put(2,0);
     }
 
 }

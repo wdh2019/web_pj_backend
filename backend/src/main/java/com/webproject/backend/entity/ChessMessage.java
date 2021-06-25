@@ -10,4 +10,5 @@ public class ChessMessage {
 
     @NonNull private int id;
     @NonNull private String position;
+    @NonNull private int location;
 }
