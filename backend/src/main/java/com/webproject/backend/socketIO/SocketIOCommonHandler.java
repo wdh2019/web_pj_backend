@@ -66,14 +66,11 @@ public class SocketIOCommonHandler {
      */
     private void sendChessPosition(String sessionId) {
         SocketIOClient client = SocketIOSession.CLIENT_MAP.get(sessionId);
-        SocketIOSession.CHESS_POSITION.forEach((userId, position) -> {
-            String username = userMapper.getUser(userId).getUsername();
-            MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setUserId(userId);
-            messageInfo.setUsername(username);
-            messageInfo.setMessageType("chessPosition");
-            messageInfo.setMessage(position);
-            client.sendEvent("chessPosition", JSON.toJSONString(messageInfo));
+        SocketIOSession.CHESS_POSITION.forEach((id, position) -> {
+            ChessMessage chessMessage = new ChessMessage();
+            chessMessage.setId(id);
+            chessMessage.setPosition(position);
+            client.sendEvent("chessPosition", JSON.toJSONString(chessMessage));
         });
     }
 
