@@ -5,6 +5,7 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import com.webproject.backend.Response.Message;
+import com.webproject.backend.entity.ChessMessage;
 import com.webproject.backend.entity.MessageInfo;
 import com.webproject.backend.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +107,20 @@ public class SocketIOCommonHandler {
         SocketIOSession.CLIENT_MAP.forEach((sessionId,client) -> {
             if(!sessionId.equals(id)){
                 client.sendEvent("movePosition", JSON.toJSONString(messageInfo));
+            }
+        });
+    }
+
+    @OnEvent(value = "updateDisk")
+    public void updateDisk(SocketIOClient client, AckRequest ackRequest, ChessMessage chessMessage){
+        SocketIOSession.CHESS_POSITION.put(chessMessage.getId(),chessMessage.getPosition());
+        broadcastDiskPosition(client.getSessionId().toString(), chessMessage);
+    }
+
+    private void broadcastDiskPosition(String id, ChessMessage chessMessage){
+        SocketIOSession.CLIENT_MAP.forEach((sessionId,client) -> {
+            if(!sessionId.equals(id)){
+                client.sendEvent("moveDisk",JSON.toJSONString(chessMessage));
             }
         });
     }
