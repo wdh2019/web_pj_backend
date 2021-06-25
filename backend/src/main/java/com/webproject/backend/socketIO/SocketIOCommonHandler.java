@@ -54,7 +54,7 @@ public class SocketIOCommonHandler {
             messageInfo.setUsername(username);
             messageInfo.setMessageType("UserPosition");
             messageInfo.setMessage(position);
-            client.sendEvent("usersPosition", messageInfo);
+            client.sendEvent("usersPosition", JSON.toJSONString(messageInfo));
         });
     }
 
