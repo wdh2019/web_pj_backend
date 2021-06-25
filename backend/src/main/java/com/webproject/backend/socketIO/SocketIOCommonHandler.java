@@ -6,6 +6,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import com.webproject.backend.Response.Message;
 import com.webproject.backend.entity.MessageInfo;
+import com.webproject.backend.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +14,12 @@ import org.springframework.stereotype.Component;
 public class SocketIOCommonHandler {
 
     private SocketIOChatHandler socketIOChatHandler;
+    private UserMapper userMapper;
 
     @Autowired
-    public SocketIOCommonHandler(SocketIOChatHandler socketIOChatHandler) {
+    public SocketIOCommonHandler(SocketIOChatHandler socketIOChatHandler, UserMapper userMapper) {
         this.socketIOChatHandler = socketIOChatHandler;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -34,6 +37,7 @@ public class SocketIOCommonHandler {
             sendUsersPosition(client.getSessionId().toString());
             sendChessPosition(client.getSessionId().toString());
             socketIOChatHandler.broadcastChat(messageInfo.getUserId(), messageInfo.getUsername(), client.getSessionId().toString());
+            SocketIOSession.USER_POSITION.put(messageInfo.getUserId(), messageInfo.getMessage());
         }
     }
 
@@ -42,7 +46,16 @@ public class SocketIOCommonHandler {
      * @param sessionId
      */
     private void sendUsersPosition(String sessionId) {
-
+        SocketIOClient client = SocketIOSession.CLIENT_MAP.get(sessionId);
+        SocketIOSession.USER_POSITION.forEach((userId, position) -> {
+            String username = userMapper.getUser(userId).getUsername();
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setUserId(userId);
+            messageInfo.setUsername(username);
+            messageInfo.setMessageType("UserPosition");
+            messageInfo.setMessage(position);
+            client.sendEvent("usersPosition", messageInfo);
+        });
     }
 
     /**
