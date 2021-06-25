@@ -33,7 +33,7 @@ public class SocketIOCommonHandler {
         }else {
             sendUsersPosition(client.getSessionId().toString());
             sendChessPosition(client.getSessionId().toString());
-            socketIOChatHandler.broadcastChat(messageInfo.getUserId(), messageInfo.getUsername());
+            socketIOChatHandler.broadcastChat(messageInfo.getUserId(), messageInfo.getUsername(), client.getSessionId().toString());
         }
     }
 
@@ -53,6 +53,12 @@ public class SocketIOCommonHandler {
 
     }
 
+    /**
+     * 更新用户的位置
+     * @param client
+     * @param ackRequest
+     * @param messageInfo
+     */
     @OnEvent(value = "updatePosition")
     public void updatePosition(SocketIOClient client, AckRequest ackRequest, MessageInfo messageInfo){
         if(!messageInfo.getMessageType().equals("updatePosition")){
@@ -68,6 +74,11 @@ public class SocketIOCommonHandler {
         }
     }
 
+    /**
+     * 将用户更新的位置
+     * @param id
+     * @param messageInfo
+     */
     private void broadcastUserPosition(String id, MessageInfo messageInfo){
         SocketIOSession.CLIENT_MAP.forEach((sessionId,client) -> {
             if(!sessionId.equals(id)){

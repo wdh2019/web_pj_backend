@@ -33,14 +33,15 @@ public class SocketIOChatHandler {
         }
     }
 
-    public  void broadcastChat(int userId, String username) {
+    public void broadcastChat(int userId, String username, String id) {
         MessageInfo messageInfo = new MessageInfo();
         messageInfo.setUserId(userId);
         messageInfo.setUsername(username);
         messageInfo.setMessageType("Broadcast");
         messageInfo.setMessage(username + "joined in our game !");
         SocketIOSession.CLIENT_MAP.forEach((sessionId, client) -> {
-            client.sendEvent("updateChat", JSON.toJSONString(messageInfo));
+            if(!sessionId.equals(id))
+                client.sendEvent("updateChat", JSON.toJSONString(messageInfo));
         });
     }
 
