@@ -95,7 +95,7 @@ public class SocketIOCommonHandler {
     private void broadcastUserPosition(String id, MessageInfo messageInfo){
         SocketIOSession.CLIENT_MAP.forEach((sessionId,client) -> {
             if(!sessionId.equals(id)){
-                client.sendEvent("movePosition", messageInfo);
+                client.sendEvent("movePosition", JSON.toJSONString(messageInfo));
             }
         });
     }
