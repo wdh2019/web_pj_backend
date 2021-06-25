@@ -1,5 +1,6 @@
 package com.webproject.backend.socketIO;
 
+import com.alibaba.fastjson.JSON;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webproject.backend.Response.Message;
+import com.webproject.backend.entity.MessageInfo;
 import com.webproject.backend.entity.User;
 import com.webproject.backend.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +57,22 @@ public class SocketIOConnectHandler {
         if(SocketIOSession.USER_MAP.containsKey(id)) {
             int userId = SocketIOSession.USER_MAP.get(id);
             SocketIOSession.USER_POSITION.remove(userId);
-            SocketIOSession.USER_MAP.remove(id);
+            SocketIOSession.USER_MAP.remove(id);broadcastLogout(userId);
         }
         client.sendEvent("disconnected",Message.newMessage("success"));
+
+    }
+
+    private void broadcastLogout(int userId){
+        MessageInfo messageInfo = new MessageInfo();
+        String username = userMapper.getUser(userId).getUsername();
+        messageInfo.setUserId(userId);
+        messageInfo.setUsername(username);
+        messageInfo.setMessageType("Logout");
+        messageInfo.setMessage("Bye");
+        SocketIOSession.CLIENT_MAP.forEach((sessionId, client) -> {
+            client.sendEvent("logout", JSON.toJSONString(messageInfo));
+        });
     }
 
 }

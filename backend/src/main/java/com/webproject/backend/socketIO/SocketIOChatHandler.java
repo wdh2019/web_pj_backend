@@ -34,6 +34,9 @@ public class SocketIOChatHandler {
     }
 
     public void broadcastChat(int userId, String username, String id) {
+        if(SocketIOSession.CLIENT_MAP.size() == 0){
+            return;
+        }
         MessageInfo messageInfo = new MessageInfo();
         messageInfo.setUserId(userId);
         messageInfo.setUsername(username);
