@@ -37,6 +37,7 @@ public class SocketIOCommonHandler {
             sendUsersPosition(client.getSessionId().toString());
             sendChessPosition(client.getSessionId().toString());
             socketIOChatHandler.broadcastChat(messageInfo.getUserId(), messageInfo.getUsername(), client.getSessionId().toString());
+            SocketIOSession.USER_MAP.put(client.getSessionId().toString(), messageInfo.getUserId());
             SocketIOSession.USER_POSITION.put(messageInfo.getUserId(), messageInfo.getMessage());
         }
     }
