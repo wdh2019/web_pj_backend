@@ -32,8 +32,15 @@ public class AuthController {
         String password = (String)params.get("password");
         String gender = (String)params.get("gender");
         int age = (Integer) params.get("age");
-        if(service.register(username,password,age,gender))
-            return ResponseEntity.ok(Message.newMessage("success"));
+        if(service.register(username,password,age,gender)){
+            User user = service.getUser(username,password);
+            String token = tokenUtil.generateToken(user);
+            HashMap<String,Object> map = new HashMap<>();
+            map.put("message","success");
+            map.put("token", token);
+            map.put("user",user);
+            return ResponseEntity.ok(map);
+        }
         else
             return ResponseEntity.ok(Message.newMessage("failure"));
     }
@@ -42,10 +49,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody HashMap<String,Object> params){
         String username = (String)params.get("username");
         String password = (String)params.get("password");
-        User user = service.login(username,password);
+        User user = service.getUser(username,password);
         if(user != null){
-            String token = tokenUtil.generateToken(user);
             HashMap<String,Object> map = new HashMap<>();
+            String token = tokenUtil.generateToken(user);
             map.put("message","success");
             map.put("token", token);
             map.put("user",user);

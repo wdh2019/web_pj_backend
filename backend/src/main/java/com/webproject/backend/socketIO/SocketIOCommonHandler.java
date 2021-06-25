@@ -1,5 +1,6 @@
 package com.webproject.backend.socketIO;
 
+import com.alibaba.fastjson.JSON;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnEvent;
@@ -50,5 +51,28 @@ public class SocketIOCommonHandler {
      */
     private void sendChessPosition(String sessionId) {
 
+    }
+
+    @OnEvent(value = "updatePosition")
+    public void updatePosition(SocketIOClient client, AckRequest ackRequest, MessageInfo messageInfo){
+        if(!messageInfo.getMessageType().equals("updatePosition")){
+            client.sendEvent("joinIn", Message.newMessage("Wrong Type"));
+        }else{
+            SocketIOSession.USER_POSITION.put(messageInfo.getUserId(), messageInfo.getMessage());
+            MessageInfo message = new MessageInfo();
+            message.setUserId(messageInfo.getUserId());
+            message.setUsername(messageInfo.getUsername());
+            message.setMessageType("movePosition");
+            message.setMessage(messageInfo.getMessage());
+            broadcastUserPosition(client.getSessionId().toString(), message);
+        }
+    }
+
+    private void broadcastUserPosition(String id, MessageInfo messageInfo){
+        SocketIOSession.CLIENT_MAP.forEach((sessionId,client) -> {
+            if(!sessionId.equals(id)){
+                client.sendEvent("movePosition", messageInfo);
+            }
+        });
     }
 }
