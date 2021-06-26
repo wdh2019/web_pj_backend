@@ -12,10 +12,11 @@
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>project for web project</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
+        <skipTests>true</skipTests>
     </properties>
     <dependencies>
         <dependency>
@@ -86,7 +87,6 @@
         </dependency>
 
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
