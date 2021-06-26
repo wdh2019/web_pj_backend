@@ -45,6 +45,6 @@ public class AdministrationService {
             }
             all++;
         }
-        return (double)(male/all);
+        return ((0.0 + male)/all);
     }
 }
