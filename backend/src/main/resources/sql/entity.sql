@@ -10,7 +10,7 @@ gender varchar(255)
 drop if exists table history
 create table history(
 historyId int auto_increment primary key,
-date Date,
+time Date,
 userId int,
 username varchar(255),
 messageType varchar(255),
