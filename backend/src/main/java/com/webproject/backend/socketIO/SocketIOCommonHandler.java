@@ -8,19 +8,24 @@ import com.webproject.backend.Response.Message;
 import com.webproject.backend.entity.ChessMessage;
 import com.webproject.backend.entity.MessageInfo;
 import com.webproject.backend.mapper.UserMapper;
+import com.webproject.backend.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class SocketIOCommonHandler {
 
     private SocketIOChatHandler socketIOChatHandler;
     private UserMapper userMapper;
+    private HistoryService historyService;
 
     @Autowired
-    public SocketIOCommonHandler(SocketIOChatHandler socketIOChatHandler, UserMapper userMapper) {
+    public SocketIOCommonHandler(SocketIOChatHandler socketIOChatHandler, UserMapper userMapper, HistoryService historyService) {
         this.socketIOChatHandler = socketIOChatHandler;
         this.userMapper = userMapper;
+        this.historyService = historyService;
     }
 
     /**
@@ -122,5 +127,20 @@ public class SocketIOCommonHandler {
                 client.sendEvent("moveDisk",JSON.toJSONString(chessMessage));
             }
         });
+    }
+
+    @OnEvent(value = "success")
+    public void success(SocketIOClient socketIOClient, AckRequest ackRequest, String message){
+        SocketIOSession.init();
+        SocketIOSession.CLIENT_MAP.forEach((sessionId,client) -> {
+            client.sendEvent("success",Message.newMessage("success"));
+        });
+        StringBuffer buffer = new StringBuffer();
+        for(Map.Entry<String,Integer> entry : SocketIOSession.USER_MAP.entrySet()){
+            String username = userMapper.getUser(entry.getValue()).getUsername();
+            buffer.append(entry.getValue() + ":" + username + "-");
+        }
+
+
     }
 }

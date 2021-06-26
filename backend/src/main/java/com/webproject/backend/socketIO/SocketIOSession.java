@@ -34,4 +34,13 @@ public class SocketIOSession {
 
     public static int step;
 
+    public static void init(){
+        CHESS_POSITION.put(0,"-200,55,100");
+        CHESS_POSITION.put(1,"-200,45,100");
+        CHESS_POSITION.put(2,"-200,35,100");
+        CHESS_LOCATION.put(0,0);
+        CHESS_LOCATION.put(1,0);
+        CHESS_LOCATION.put(2,0);
+    }
+
 }
